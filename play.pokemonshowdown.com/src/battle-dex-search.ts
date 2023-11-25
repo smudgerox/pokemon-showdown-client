@@ -551,7 +551,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 	set: PokemonSet | null = null;
 
 	protected formatType: 'doubles' | 'bdsp' | 'bdspdoubles' | 'letsgo' | 'metronome' | 'natdex' | 'nfe' |
-	'ssdlc1' | 'ssdlc1doubles' | 'predlc' | 'predlcdoubles' | 'predlcnatdex' | 'stadium' | 'lc' | null = null;
+	'ssdlc1' | 'ssdlc1doubles' | 'predlc' | 'predlcdoubles' | 'predlcnatdex' | 'stadium' | 'lc' | 'natdexdoubles' | null = null;
 
 	/**
 	 * Cached copy of what the results list would be with only base filters
@@ -933,6 +933,8 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 			table = table['gen7letsgo'];
 		} else if (this.formatType === 'natdex') {
 			table = table['gen' + dex.gen + 'natdex'];
+		} else if (dex.gen === 9 && format === 'gen9nationaldexdoubles' && !this.formatType) {
+			table = table['natdexdoubles'];
 		} else if (this.formatType === 'metronome') {
 			table = table['gen' + dex.gen + 'metronome'];
 		} else if (this.formatType === 'nfe') {
@@ -994,6 +996,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		} else if (isHackmons && (dex.gen < 9 || this.formatType === 'natdex')) {
 			tierSet = tierSet.slice(slices.AG || slices.Uber);
 		} else if (format === 'monotype' || format.startsWith('monothreat')) tierSet = tierSet.slice(slices.Uber);
+		else if (format === 'natdexdoubles') tierSet = tierSet.slice(slices.DUber);
 		else if (format === 'doublesubers') tierSet = tierSet.slice(slices.DUber);
 		else if (format === 'doublesou' && dex.gen > 4) tierSet = tierSet.slice(slices.DOU);
 		else if (format === 'doublesuu') tierSet = tierSet.slice(slices.DUU);
